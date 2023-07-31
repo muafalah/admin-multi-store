@@ -34,6 +34,7 @@ export async function PATCH(
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
 export async function DELETE(
   req: Request,
   { params }: { params: { storeId: string } }
