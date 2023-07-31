@@ -1,22 +1,9 @@
 "use client";
 
-import { Store } from "@prisma/client";
-import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import {
-  Check,
-  ChevronsUpDown,
-  PlusCircle,
-  Store as StoreIcon,
-} from "lucide-react";
+import * as React from "react";
+import { Check, ChevronsUpDown, PlusCircle, Store } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { useStoreModal } from "@/hooks/use-store-modal";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -27,24 +14,29 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useStoreModal } from "@/hooks/use-store-modal";
+import { useParams, useRouter } from "next/navigation";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
 
 interface StoreSwitcherProps extends PopoverTriggerProps {
-  items: Store[];
+  items: Record<string, any>[];
 }
 
 export default function StoreSwitcher({
-  items = [],
   className,
+  items = [],
 }: StoreSwitcherProps) {
   const storeModal = useStoreModal();
   const params = useParams();
   const router = useRouter();
-
-  const [open, setOpen] = useState(false);
 
   const formattedItems = items.map((item) => ({
     label: item.name,
@@ -54,6 +46,8 @@ export default function StoreSwitcher({
   const currentStore = formattedItems.find(
     (item) => item.value === params.storeId
   );
+
+  const [open, setOpen] = React.useState(false);
 
   const onStoreSelect = (store: { value: string; label: string }) => {
     setOpen(false);
@@ -69,9 +63,10 @@ export default function StoreSwitcher({
           role="combobox"
           aria-expanded={open}
           aria-label="Select a store"
-          className={cn("w-[200px] justify-center", className)}
+          aria-controls="store-switcher-button"
+          className={cn("w-[200px] justify-between", className)}
         >
-          <StoreIcon className="mr-2 h-4 w-4" />
+          <Store className="mr-2 h-4 w-4" />
           {currentStore?.label}
           <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -80,7 +75,7 @@ export default function StoreSwitcher({
         <Command>
           <CommandList>
             <CommandInput placeholder="Search store..." />
-            <CommandEmpty>No store found</CommandEmpty>
+            <CommandEmpty>No store found.</CommandEmpty>
             <CommandGroup heading="Stores">
               {formattedItems.map((store) => (
                 <CommandItem
@@ -88,7 +83,7 @@ export default function StoreSwitcher({
                   onSelect={() => onStoreSelect(store)}
                   className="text-sm"
                 >
-                  <StoreIcon className="mr-2 h-4 w-4" />
+                  <Store className="mr-2 h-4 w-4" />
                   {store.label}
                   <Check
                     className={cn(
