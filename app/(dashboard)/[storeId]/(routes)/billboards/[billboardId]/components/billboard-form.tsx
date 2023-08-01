@@ -23,8 +23,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { AlertModal } from "@/components/modals/alert-modal";
-import { ApiAlert } from "@/components/api-alert";
-import { useOrigin } from "@/hooks/use-origin";
 import ImageUpload from "@/components/image-upload";
 
 interface BillboardFormProps {
@@ -39,7 +37,6 @@ const formSchema = z.object({
 type BillboardFormValues = z.infer<typeof formSchema>;
 
 export const BillboardForm = ({ initialData }: BillboardFormProps) => {
-  const origin = useOrigin();
   const params = useParams();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -169,7 +166,6 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
           </Button>
         </form>
       </Form>
-      <Separator />
     </>
   );
 };
