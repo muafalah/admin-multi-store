@@ -1,6 +1,7 @@
-import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+
+import prismadb from "@/lib/prismadb";
 
 export async function POST(
   req: Request,
@@ -91,7 +92,7 @@ export async function GET(
         categoryId: categoryId,
         sizeId: sizeId,
         colorId: colorId,
-        isFeatured: isFeatured ? true : false,
+        isFeatured: isFeatured ? true : undefined,
         isArchived: false,
       },
       include: {
